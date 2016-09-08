@@ -2,8 +2,8 @@
 ; ----------------------------------------
 
 ; Blizzard maprom A1200 Kickstart 3.1
-IF EXISTS S:blizzard_a1200_ks31_maprom
-	C:blizkick SYS:devs/kickstarts/kick40068.A1200 EXTRESBUF=200000 MODULE QUIET speedyide scsi.device icon.library QUIET
+IF EXISTS S:Use-Blizzard-A1200-KS31-MapRom
+	C:blizkick SYS:devs/kickstarts/kick40068.A1200 EXTRESBUF=200000 MODULE DEVS:scsi.device LIBS:icon.library speedyide QUIET
 Else
 	C:blizkick * EXTRESBUF=200000 MODULE DEVS:scsi.device LIBS:icon.library speedyide QUIET
 EndIf

@@ -19,14 +19,10 @@ endif
 ;END MUI
 
 
-; Remove the previous version of KCON:
-Assign KCON: DISMOUNT
-Assign KRAW: DISMOUNT 
-;Mount KCON: from DEVS:KingCON-mountlist
-;Mount KRAW: from DEVS:KingCON-mountlist 
-
-; to replace con with kingCON
-Assign CON: DISMOUNT
-Assign RAW: DISMOUNT 
-Mount CON: from DEVS:KingCON-mountlist
-Mount RAW: from DEVS:KingCON-mountlist 
+; Replace CON with KingCON, if present
+IF EXISTS DEVS:KingCON-mountlist
+	Assign CON: DISMOUNT
+	Assign RAW: DISMOUNT 
+	Mount CON: from DEVS:KingCON-mountlist
+	Mount RAW: from DEVS:KingCON-mountlist 
+ENDIF

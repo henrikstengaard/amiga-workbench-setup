@@ -2,8 +2,8 @@
 ; ------------------------------------------
 
 ; Furia maprom A600 Kickstart 3.1
-IF EXISTS S:furia_a600_ks31_maprom
-	; Check for Kickstart A600 v3.1
+IF EXISTS S:Use-Furia-A600-KS31-MapRom
+	; Check for Kickstart 40.63
 	version >RAM:kickstart
 	search RAM:kickstart "Kickstart 40.63" >NIL:
 

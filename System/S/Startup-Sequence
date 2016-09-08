@@ -2,26 +2,26 @@
 ; ----------------
 
 
-; Execute Blizzard script, if "blizzard_run" file exists
-IF EXISTS S:blizzard_run
-   execute S:blizzard
+; Execute Blizzard script, if "Use-Blizzard" file exists
+IF EXISTS S:Use-Blizzard
+   execute S:Blizzard
 ENDIF
 
 
-; Execute ACA script, if "aca_run" file exists
-IF EXISTS S:aca_run
-   execute S:aca
+; Execute ACA script, if "Use-ACA" file exists
+IF EXISTS S:Use-ACA
+   execute S:ACA
 ENDIF
 
 
-; Execute Furia script, if "furia_run" file exists
-IF EXISTS S:furia_run
-   execute S:furia
+; Execute Furia script, if "Use-Furia" file exists
+IF EXISTS S:Use-Furia
+   execute S:Furia
 ENDIF
 
 
-; Load scsi.device and icon.library, if not "blizzard_run" file exists
-IF NOT EXISTS S:blizzard_run
+; Load scsi.device and icon.library, if not "Blizzard-Run" file exists
+IF NOT EXISTS S:Use-Blizzard
 	C:LoadModule >NIL: DEVS:scsi.device LIBS:icon.library
 ENDIF
 
@@ -29,50 +29,67 @@ ENDIF
 C:SetPatch QUIET
 
 
-; Anticlick
-IF EXISTS C:anticlick
-  C:anticlick
-EndIf
+C:Version >NIL:
+C:AddBuffers >NIL: DF0: 15
+FailAt 21
 
 
-; User assign
-execute S:user-assign
+C:anticlick
+C:PatchRam
+C:MinStack 8192
+C:TagLiFE
+C:PatchWB
 
 
 C:MakeDir RAM:T RAM:Clipboards RAM:ENV RAM:ENV/Sys
-C:Copy >NIL: ENVARC: RAM:ENV ALL NOREQ
+Assign ENV: RAM:Env
+C:Copy ENVARC:~(#?.info) ENV: ALL QUIET
 
-Assign >NIL: ENV: RAM:ENV
-run >nil: C:MagicWB-Demon 4,123,123,123 5,175,175,175 6,170,144,124 7,255,169,151 8,0,0,255 ; Don't remove this entry!
+
+Resident >NIL: C:Assign PURE
+Resident >NIL: C:Execute PURE
+
 Assign >NIL: T: RAM:T
+Assign >NIL: CLIPS: RAM:Clipboards
+Assign >NIL: REXX: S:
+Assign >NIL: PRINTERS: DEVS:Printers
+Assign >NIL: KEYMAPS: DEVS:Keymaps
+Assign >NIL: LOCALE: SYS:Locale
+Assign >NIL: LIBS: SYS:Classes ADD
+Assign >NIL: HELP: LOCALE:Help DEFER
+Assign >NIL: DOPUS: SYS:Programs/DirOpus4
+
+
+; User assign
+execute S:User-Assign
 
 
 ; User env
-execute S:user-env
+execute S:User-Env
 
 
-; Start Amiga Boot Selector, if "abs_run" file exists
-IF EXISTS S:abs_run
+; Start Amiga Boot Selector, if "ABS-Run" file exists
+IF EXISTS S:ABS-Run
 	C:abs
 	execute S:Boot.abs
 	SKIP end
 ENDIF
 
 
-; Execute Arcade Game Selector 2 Games script, if "ags2games_run" file exists
-IF EXISTS S:ags2games_run
-	execute S:ags2games
+; Execute Arcade Game Selector 2 Games script, if "AGS2Games-Run" file exists
+IF EXISTS S:AGS2Games-Run
+	execute S:AGS2Games
 ENDIF
 
 
-; Execute Arcade Game Selector 2 Demos script, if "ags2demos_run" file exists
-IF EXISTS S:ags2demos_run
-	execute S:ags2demos
+; Execute Arcade Game Selector 2 Demos script, if "AGS2Demos-Run" file exists
+IF EXISTS S:AGS2Demos-Run
+	execute S:AGS2Demos
 ENDIF
 
 
 ; Start workbench
-execute S:wb
+execute S:WB
 
 
 LAB end

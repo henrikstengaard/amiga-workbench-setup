@@ -1,23 +1,10 @@
-C:Version >NIL:
-C:AddBuffers >NIL: DF0: 15
-FailAt 21
+; Workbench Script
+; ----------------
 
 
-Resident >NIL: C:Assign PURE
-Resident >NIL: C:Execute PURE
-
-Assign >NIL: CLIPS: RAM:Clipboards
-Assign >NIL: REXX: S:
-Assign >NIL: PRINTERS: DEVS:Printers
-Assign >NIL: KEYMAPS: DEVS:Keymaps
-Assign >NIL: LOCALE: SYS:Locale
-Assign >NIL: LIBS: SYS:Classes ADD
-Assign >NIL: HELP: LOCALE:Help DEFER
-Assign >NIL: DOPUS: SYS:Programs/DOpus412
-
-
-; Optimization
-execute S:optimization
+;C:blazewcp
+;C:FBlit
+;C:FText
 
 
 BindDrivers
@@ -41,9 +28,16 @@ UnSet Kickstart
 
 C:AddDataTypes REFRESH QUIET
 C:IPrefs
+C:FPPrefs
 C:ConClip
+C:FastColors
+
+IF EXISTS ENVARC:Sys/def_ramdisk.info
+   Copy ENVARC:Sys/def_ramdisk.info RAM:Disk.info >NIL:
+EndIf
 
 Path >NIL: RAM: C: SYS:Utilities SYS:Rexxc SYS:System S: SYS:Prefs SYS:WBStartup SYS:Tools SYS:Tools/Commodities
+
 
 IF EXISTS S:User-Startup
   Execute S:User-Startup
