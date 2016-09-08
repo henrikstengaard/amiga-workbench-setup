@@ -2,6 +2,24 @@
 ; ----------------
 
 
+; Get mouse button pressed
+C:GetMouseInput LOCAL
+
+
+; Run configure startup, if right mouse button is hold down during startup (for recovery)
+IF $MouseInput EQ 2
+	C:MakeDir RAM:T RAM:Clipboards RAM:ENV RAM:ENV/Sys
+	Assign ENV: RAM:Env
+	C:Copy ENVARC:~(#?.info) ENV: ALL QUIET
+	Assign >NIL: T: RAM:T
+
+	cd SYS:Programs/Configuration
+	execute Configure-Startup NOPROMPT
+
+	reboot
+ENDIF
+
+
 ; Execute Blizzard script, if "Use-Blizzard" file exists
 IF EXISTS S:Use-Blizzard
    execute S:Blizzard
@@ -68,22 +86,22 @@ execute S:User-Assign
 execute S:User-Env
 
 
-; Start Amiga Boot Selector, if "ABS-Run" file exists
-IF EXISTS S:ABS-Run
+; Start Amiga Boot Selector, if "Start-ABS" file exists
+IF EXISTS S:Start-ABS
 	C:abs
 	execute S:Boot.abs
 	SKIP end
 ENDIF
 
 
-; Execute Arcade Game Selector 2 Games script, if "AGS2Games-Run" file exists
-IF EXISTS S:AGS2Games-Run
+; Execute Arcade Game Selector 2 Games script, if "Start-AGS2Games" file exists
+IF EXISTS S:Start-AGS2Games
 	execute S:AGS2Games
 ENDIF
 
 
-; Execute Arcade Game Selector 2 Demos script, if "AGS2Demos-Run" file exists
-IF EXISTS S:AGS2Demos-Run
+; Execute Arcade Game Selector 2 Demos script, if "Start-AGS2Demos" file exists
+IF EXISTS S:Start-AGS2Demos
 	execute S:AGS2Demos
 ENDIF
 

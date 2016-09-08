@@ -6,6 +6,17 @@
 ; This script configures of startup for Blizzard, ACA, Furia, CPU, FPU, Amiga Boot Selector and AGS2 for games and demos using yes/no dialogs. 
 
 
+.KEY noprompt/s
+.BRA { 
+.KET }  
+
+
+; No prompt of re-configure startup dialog
+if "{noprompt}" not eq ""
+	SKIP noprompt
+EndIf
+
+ 
 ; Re-configure startup prompt, if not run configure startup exists in wbstartup
 IF NOT EXISTS SYS:WBStartup/Run-Configure-Startup
 	setenv configure `RequestChoice "Re-configure startup" "Do you want to re-configure startup configuration?" "Yes|No"`
@@ -15,8 +26,12 @@ IF NOT EXISTS SYS:WBStartup/Run-Configure-Startup
 EndIF
 
 
-; Reset startup without prompt
-execute Reset-Startup NOPROMPT
+; No prompt
+LAB noprompt
+
+
+; Reset startup with noprompt
+execute SYS:Programs/Configuration/Reset-Startup NOPROMPT
 
 
 ; Use Accelerator
@@ -153,13 +168,13 @@ EndIf
 ; Configure Amiga Boot Selector
 setenv abs `RequestChoice "Start ABS" "Do you want start Amiga Boot Selector before loading Workbench?" "Yes|No"`
 If $abs eq "1" 
-	echo "" > S:ABS-Run
+	echo "" > S:Start-ABS
 
 	SKIP end
 Else
-	; Delete "ABS-Run" file
-	IF EXISTS S:ABS-Run
-		delete >NIL: S:ABS-Run
+	; Delete "Start-ABS" file
+	IF EXISTS S:Start-ABS
+		delete >NIL: S:Start-ABS
 	EndIF
 EndIf
 
@@ -167,13 +182,13 @@ EndIf
 ; Configure AGS2 Games
 setenv ags2games `RequestChoice "Start AGS2 Games" "Do you want start AGS2 Games before loading Workbench?" "Yes|No"`
 If $ags2games eq "1" 
-	echo "" > S:AGS2Games-Run
+	echo "" > S:Start-AGS2Games
 
 	SKIP end
 Else
-	; Delete "AGS2Games-Run" file
-	IF EXISTS S:AGS2Games-Run
-		delete >NIL: S:AGS2Games-Run
+	; Delete "Start-AGS2Games" file
+	IF EXISTS S:Start-AGS2Games
+		delete >NIL: S:Start-AGS2Games
 	EndIF
 EndIf
 
@@ -181,11 +196,11 @@ EndIf
 ; Configure AGS2 Demos
 setenv ags2demos `RequestChoice "Start AGS2 Demos" "Do you want start AGS2 Demos before loading Workbench?" "Yes|No"`
 If $ags2demos eq "1" 
-	echo "" > S:AGS2Demos-Run
+	echo "" > S:Start-AGS2Demos
 Else
-	; Delete "AGS2Demos-Run" file
-	IF EXISTS S:AGS2Demos-Run
-		delete >NIL: S:AGS2Demos-Run
+	; Delete "Start-AGS2Demos" file
+	IF EXISTS S:Start-AGS2Demos
+		delete >NIL: S:Start-AGS2Demos
 	EndIF
 EndIf
 

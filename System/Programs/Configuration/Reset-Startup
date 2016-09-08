@@ -10,76 +10,83 @@
 .KET }  
 
 
-; No prompt of reset configuration dialog
+; No prompt of reset startup dialog
 if "{noprompt}" not eq ""
-	SKIP reset
+	SKIP noprompt
 EndIf
 
 
 ; Reset configuration
-setenv reset `RequestChoice "Reset configuration" "Are you sure you want to reset startup configuration?" "Yes|No"`
+setenv reset `RequestChoice "Reset startup" "Are you sure you want to reset startup configuration?" "Yes|No"`
 If $reset eq "0" 
 	SKIP end
 EndIf
 
 
-; Reset
-LAB reset
+; No prompt
+LAB noprompt
 
 
 ; Reset Blizzard
-IF EXISTS S:blizzard_run
-	delete >NIL: S:blizzard_run
+IF EXISTS S:Blizzard-Run
+	delete >NIL: S:Blizzard-Run
 EndIF
-IF EXISTS S:blizzard_a1200_ks31_maprom
-	delete >NIL: S:blizzard_a1200_ks31_maprom
+IF EXISTS S:Use-Blizzard-A1200-KS31-MapRom
+	delete >NIL: S:Use-Blizzard-A1200-KS31-MapRom
 EndIF
 
 
 ; Reset ACA
-IF EXISTS S:aca_run
-	delete >NIL: S:aca_run
+IF EXISTS S:Use-ACA
+	delete >NIL: S:Use-ACA
 EndIF
-IF EXISTS S:aca_a600_ks31_maprom
-	delete >NIL: S:aca_a600_ks31_maprom
+IF EXISTS S:Use-ACA-A600-KS31-MapRom
+	delete >NIL: S:Use-ACA-A600-KS31-MapRom
 EndIF
-IF EXISTS S:aca_a1200_ks31_maprom
-	delete >NIL: S:aca_a1200_ks31_maprom
+IF EXISTS S:Use-ACA-A1200-KS31-MapRom
+	delete >NIL: S:Use-ACA-A1200-KS31-MapRom
 EndIF
 
 
 ; Reset Furia
-IF EXISTS S:furia_run
-	delete >NIL: S:furia_run
+IF EXISTS S:Use-Furia
+	delete >NIL: S:Use-Furia
 EndIF
-IF EXISTS S:furia_a600_ks31_maprom
-	delete >NIL: S:furia_a600_ks31_maprom
+IF EXISTS S:Use-Furia-A600-KS31-MapRom
+	delete >NIL: S:Use-Furia-A600-KS31-MapRom
 EndIF
 
 
 ; Reset CPU
-Copy KingCON1.3/Handler/KingCON-handler L:KingCon-handler
+IF EXISTS S:Use-020
+	delete >NIL: S:Use-020
+EndIF
+Copy >NIL: KingCON1.3/Handler/KingCON-handler L:KingCon-handler
+Copy >NIL: iconlib_46.4/icon.library_68000 Libs:icon.library
 
 
 ; Reset FPU
+IF EXISTS S:Use-FPU
+	delete >NIL: S:Use-FPU
+EndIF
 Copy >NIL: guigfx_render_nofpu/ Libs:
 
 
 ; Reset Amiga Boot Selector
-IF EXISTS S:abs_run
-	delete >NIL: S:abs_run
+IF EXISTS S:Start-ABS
+	delete >NIL: S:Start-ABS
 EndIF
 
 
 ; Reset AGS2 Games
-IF EXISTS S:ags2games_run
-	delete >NIL: S:ags2games_run
+IF EXISTS S:Start-AGS2Games
+	delete >NIL: S:Start-AGS2Games
 EndIF
 
 
 ; Reset AGS2 Demos
-IF EXISTS S:ags2demos_run
-	delete >NIL: S:ags2demos_run
+IF EXISTS S:Start-AGS2Demos
+	delete >NIL: S:Start-AGS2Demos
 EndIF
 
 
