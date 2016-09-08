@@ -1,0 +1,9 @@
+; Blizzard Accelerator Card Startup Script
+; ----------------------------------------
+
+; Blizzard maprom A1200 Kickstart 3.1
+IF EXISTS S:blizzard_a1200_ks31_maprom
+	C:blizkick SYS:devs/kickstarts/kick40068.A1200 EXTRESBUF=200000 MODULE QUIET speedyide scsi.device icon.library QUIET
+Else
+	C:blizkick * EXTRESBUF=200000 MODULE DEVS:scsi.device LIBS:icon.library speedyide QUIET
+EndIf

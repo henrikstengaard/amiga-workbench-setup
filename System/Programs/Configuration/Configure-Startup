@@ -1,0 +1,187 @@
+; Configure Startup Script
+; ------------------------
+; Author: Henrik Noerfjand Stengaard
+; Date: 2016-09-06
+;
+; This script configures of startup for Blizzard, ACA, Furia, CPU, FPU, Amiga Boot Selector and AGS2 for games and demos using yes/no dialogs. 
+
+
+; Re-configure startup
+IF NOT EXISTS SYS:WBStartup/First-Configure-Startup
+	setenv configure `RequestChoice "Re-configure startup" "Do you want to re-configure startup configuration?" "Yes|No"`
+	If $configure eq "0" 
+		SKIP end
+	EndIF
+EndIF
+
+
+; Reset startup without prompt
+execute Reset-Startup NOPROMPT
+
+
+; Use Accelerator
+setenv useacc `RequestChoice "Use Accelerator" "Do you have an accelerator card installed?" "Yes|No"`
+If $useacc eq "0" 
+	SKIP cpufpu
+EndIf
+
+
+; Configure Blizzard
+setenv blizzard `RequestChoice "Use Blizzard" "Do you have a Blizzard accelerator card installed?" "Yes|No"`
+If $blizzard eq "1" 
+	echo "" > S:blizzard_run
+
+	; Blizzard maprom A1200 Kickstart 3.1
+	setenv blizzardmap `RequestChoice "Blizzard Maprom" "Do you want Blizzard to maprom A1200 Kickstart 3.1?" "Yes|No"`
+	If $blizzardmap eq "1" 
+		echo "" > S:blizzard_a1200_ks31_maprom
+	Else
+		; Delete "blizzard_a1200_ks31_maprom" file
+		IF EXISTS S:blizzard_a1200_ks31_maprom
+			delete >NIL: S:blizzard_a1200_ks31_maprom
+		EndIF
+	EndIF
+
+	SKIP cpufpu
+Else
+	; Delete "blizzard_run" file
+	IF EXISTS S:blizzard_run
+		delete >NIL: S:blizzard_run
+	EndIF
+EndIf
+
+
+; Configure ACA
+setenv useaca `RequestChoice "Use ACA" "Do you have an ACA accelerator card installed?" "Yes|No"`
+If $useaca eq "1" 
+	echo "" > S:aca_run
+
+	; ACA maprom A600 Kickstart 3.1
+	setenv acamaprom `RequestChoice "ACA Maprom" "Do you want ACA to maprom A600 Kickstart 3.1?" "Yes|No"`
+	If $acamaprom eq "1" 
+		echo "" > S:aca_a600_ks31_maprom
+		
+		SKIP cpufpu
+	Else
+		; Delete "aca_a600_ks31_maprom" file
+		IF EXISTS S:aca_a600_ks31_maprom
+			delete >NIL: S:aca_a600_ks31_maprom
+		EndIF
+	EndIF
+
+	; ACA maprom A1200 Kickstart 3.1
+	setenv acamaprom `RequestChoice "ACA Maprom" "Do you want ACA to maprom A1200 Kickstart 3.1?" "Yes|No"`
+	If $acamaprom eq "1" 
+		echo "" > S:aca_a1200_ks31_maprom
+	Else
+		; Delete "aca_a1200_ks31_maprom" file
+		IF EXISTS S:aca_a1200_ks31_maprom
+			delete >NIL: S:aca_a1200_ks31_maprom
+		EndIF
+	EndIF
+
+	SKIP cpufpu
+Else
+	; Delete "aca_run" file
+	IF EXISTS S:aca_run
+		delete >NIL: S:aca_run
+	EndIF
+EndIf
+
+
+; Configure Furia
+setenv usefuria `RequestChoice "Use Furia" "Do you have a Furia A600 accelerator card installed?" "Yes|No"`
+If $usefuria eq "1" 
+	echo "" > S:furia_run
+
+	; Furia maprom A600 Kickstart 3.1
+	setenv furiamaprom `RequestChoice "Furia Maprom" "Do you want ACA to maprom A600 Kickstart 3.1?" "Yes|No"`
+	If $furiamaprom eq "1" 
+		echo "" > S:furia_a600_ks31_maprom
+	Else
+		; Delete "furia_a600_ks31_maprom" file
+		IF EXISTS S:furia_a600_ks31_maprom
+			delete >NIL: S:furia_a600_ks31_maprom
+		EndIF
+	EndIF
+Else
+	; Delete "furia_run" file
+	IF EXISTS S:furia_run
+		delete >NIL: S:furia_run
+	EndIF
+EndIf
+
+		
+; CPU & FPU
+LAB cpufpu
+	
+	
+; Configure CPU
+setenv cpu `RequestChoice "Use 020" "Do you have a 020+ CPU installed?" "Yes|No"`
+If $cpu eq "1" 
+	Copy KingCON1.3/Handler/KingCON-handler.020 L:KingCon-handler
+Else
+	Copy KingCON1.3/Handler/KingCON-handler L:KingCon-handler
+EndIf
+
+
+; Configure FPU
+setenv fpu `RequestChoice "Use FPU" "Do you have a FPU installed?" "Yes|No"`
+If $fpu eq "1" 
+	Copy >NIL: guigfx_render_fpu/ Libs:
+Else
+	Copy >NIL: guigfx_render_nofpu/ Libs:
+EndIf
+
+
+; Configure Amiga Boot Selector
+setenv abs `RequestChoice "Start ABS" "Do you want start Amiga Boot Selector before loading Workbench?" "Yes|No"`
+If $abs eq "1" 
+	echo "" > S:abs_run
+
+	SKIP end
+Else
+	; Delete "abs_run" file
+	IF EXISTS S:abs_run
+		delete >NIL: S:abs_run
+	EndIF
+EndIf
+
+	
+; Configure AGS2 Games
+setenv ags2games `RequestChoice "Start AGS2 Games" "Do you want start Arcade Game Selector 2 Games before loading Workbench?" "Yes|No"`
+If $ags2games eq "1" 
+	echo "" > S:ags2games_run
+
+	SKIP end
+Else
+	; Delete "ags2games_run" file
+	IF EXISTS S:ags2games_run
+		delete >NIL: S:ags2games_run
+	EndIF
+EndIf
+
+		
+; Configure AGS2 Demos
+setenv ags2demos `RequestChoice "Start AGS2 Demos" "Do you want start Arcade Game Selector 2 Demos before loading Workbench?" "Yes|No"`
+If $ags2demos eq "1" 
+	echo "" > S:ags2demos_run
+Else
+	; Delete "ags2demos_run" file
+	IF EXISTS S:ags2demos_run
+		delete >NIL: S:ags2demos_run
+	EndIF
+EndIf
+
+
+; End
+LAB end
+
+
+; Delete Workbench first configure startup, if it exists
+IF EXISTS SYS:WBStartup/First-Configure-Startup
+	delete >NIL: SYS:WBStartup/First-Configure-Startup
+EndIF
+IF EXISTS SYS:WBStartup/First-Configure-Startup.info
+	delete >NIL: SYS:WBStartup/First-Configure-Startup.info
+EndIF

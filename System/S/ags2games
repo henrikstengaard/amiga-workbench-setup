@@ -1,0 +1,24 @@
+; Arcade Game Selector 2 Games Startup Script
+; -------------------------------------------
+
+
+; Assign AGS
+Assign AGS: $ags2gamespath
+
+
+; Copy whdload args to env, if it exists. Otherwise use default
+IF EXISTS AGS:whdloadargs
+  copy AGS:whdloadargs ENV:whdloadargs
+ELSE
+  setenv whdloadargs ""
+ENDIF
+
+
+; Start AGS2
+IF EXISTS AGS:AGS2
+  AGS:AGS2
+ENDIF
+
+
+; Remove AGS assign
+ASSIGN AGS: $ags2gamespath REMOVE

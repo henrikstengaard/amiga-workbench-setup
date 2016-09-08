@@ -1,0 +1,78 @@
+; Startup-Sequence
+; ----------------
+
+
+; Execute Blizzard script, if "blizzard_run" file exists
+IF EXISTS S:blizzard_run
+   execute S:blizzard
+ENDIF
+
+
+; Execute ACA script, if "aca_run" file exists
+IF EXISTS S:aca_run
+   execute S:aca
+ENDIF
+
+
+; Execute Furia script, if "furia_run" file exists
+IF EXISTS S:furia_run
+   execute S:furia
+ENDIF
+
+
+; Load scsi.device and icon.library, if not "blizzard_run" file exists
+IF NOT EXISTS S:blizzard_run
+	C:LoadModule >NIL: DEVS:scsi.device LIBS:icon.library
+ENDIF
+
+
+C:SetPatch QUIET
+
+
+; Anticlick
+IF EXISTS C:anticlick
+  C:anticlick
+EndIf
+
+
+; User assign
+execute S:user-assign
+
+
+C:MakeDir RAM:T RAM:Clipboards RAM:ENV RAM:ENV/Sys
+C:Copy >NIL: ENVARC: RAM:ENV ALL NOREQ
+
+Assign >NIL: ENV: RAM:ENV
+run >nil: C:MagicWB-Demon 4,123,123,123 5,175,175,175 6,170,144,124 7,255,169,151 8,0,0,255 ; Don't remove this entry!
+Assign >NIL: T: RAM:T
+
+
+; User env
+execute S:user-env
+
+
+; Start Amiga Boot Selector, if "abs_run" file exists
+IF EXISTS S:abs_run
+	C:abs
+	execute S:Boot.abs
+	SKIP end
+ENDIF
+
+
+; Execute Arcade Game Selector 2 Games script, if "ags2games_run" file exists
+IF EXISTS S:ags2games_run
+	execute S:ags2games
+ENDIF
+
+
+; Execute Arcade Game Selector 2 Demos script, if "ags2demos_run" file exists
+IF EXISTS S:ags2demos_run
+	execute S:ags2demos
+ENDIF
+
+
+; Start workbench
+execute S:wb
+
+
+LAB end
