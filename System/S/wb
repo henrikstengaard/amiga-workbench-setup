@@ -2,9 +2,12 @@
 ; ----------------
 
 
-;C:blazewcp
-;C:FBlit
-;C:FText
+; Use Workbench patches, if 020+ cpu is configured
+IF EXISTS S:Use-020
+	C:blazewcp
+	C:FBlit
+	C:FText
+ENDIF
 
 
 BindDrivers

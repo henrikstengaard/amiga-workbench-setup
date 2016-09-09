@@ -5,34 +5,20 @@
 ;
 ; This script reset configuration of startup sequence Blizzard, ACA, Furia, CPU, FPU, Amiga Boot Selector and AGS2 for games and demos. 
 
-.KEY noprompt/s
-.BRA { 
-.KET }  
-
-
-; No prompt of reset startup dialog
-if "{noprompt}" not eq ""
-	SKIP noprompt
-EndIf
-
 
 ; Reset configuration
-setenv reset `RequestChoice "Reset startup" "Are you sure you want to reset startup configuration?" "Yes|No"`
-If $reset eq "0" 
+setenv continue `RequestChoice "Reset startup" "Are you sure you want to reset startup configuration?" "Yes|No"`
+If $continue eq "0" 
 	SKIP end
 EndIf
 
 
-; No prompt
-LAB noprompt
-
-
 ; Reset Blizzard
-IF EXISTS S:Blizzard-Run
-	delete >NIL: S:Blizzard-Run
+IF EXISTS S:Use-Blizzard
+	delete >NIL: S:Use-Blizzard
 EndIF
-IF EXISTS S:Use-Blizzard-A1200-KS31-MapRom
-	delete >NIL: S:Use-Blizzard-A1200-KS31-MapRom
+IF EXISTS S:MapRom-Blizzard-A1200-KS31
+	delete >NIL: S:MapRom-Blizzard-A1200-KS31
 EndIF
 
 
@@ -40,11 +26,11 @@ EndIF
 IF EXISTS S:Use-ACA
 	delete >NIL: S:Use-ACA
 EndIF
-IF EXISTS S:Use-ACA-A600-KS31-MapRom
-	delete >NIL: S:Use-ACA-A600-KS31-MapRom
+IF EXISTS S:MapRom-ACA-A600-KS31
+	delete >NIL: S:MapRom-ACA-A600-KS31
 EndIF
-IF EXISTS S:Use-ACA-A1200-KS31-MapRom
-	delete >NIL: S:Use-ACA-A1200-KS31-MapRom
+IF EXISTS S:MapRom-ACA-A1200-KS31
+	delete >NIL: S:MapRom-ACA-A1200-KS31
 EndIF
 
 
@@ -52,8 +38,8 @@ EndIF
 IF EXISTS S:Use-Furia
 	delete >NIL: S:Use-Furia
 EndIF
-IF EXISTS S:Use-Furia-A600-KS31-MapRom
-	delete >NIL: S:Use-Furia-A600-KS31-MapRom
+IF EXISTS S:MapRom-Furia-A600-KS31
+	delete >NIL: S:MapRom-Furia-A600-KS31
 EndIF
 
 
@@ -61,15 +47,19 @@ EndIF
 IF EXISTS S:Use-020
 	delete >NIL: S:Use-020
 EndIF
-Copy >NIL: KingCON1.3/Handler/KingCON-handler L:KingCon-handler
-Copy >NIL: iconlib_46.4/icon.library_68000 Libs:icon.library
+Copy >NIL: SYS:Programs/Configuration/KingCON1.3/Handler/KingCON-handler L:KingCon-handler
+Copy >NIL: SYS:Programs/Configuration/iconlib_46.4/icon.library_68000 Libs:icon.library
 
 
 ; Reset FPU
 IF EXISTS S:Use-FPU
 	delete >NIL: S:Use-FPU
 EndIF
-Copy >NIL: guigfx_render_nofpu/ Libs:
+Copy >NIL: SYS:Programs/Configuration/guigfx_render_nofpu/ Libs:
+
+
+; Reset WHDLoad
+Copy >NIL: SYS:Programs/Configuration/WHDLoad/WHDLoad.prefs S:
 
 
 ; Reset Amiga Boot Selector

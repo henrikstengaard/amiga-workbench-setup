@@ -6,210 +6,356 @@
 ; This script configures of startup for Blizzard, ACA, Furia, CPU, FPU, Amiga Boot Selector and AGS2 for games and demos using yes/no dialogs. 
 
 
-.KEY noprompt/s
-.BRA { 
-.KET }  
-
-
-; No prompt of re-configure startup dialog
-if "{noprompt}" not eq ""
-	SKIP noprompt
-EndIf
-
- 
-; Re-configure startup prompt, if not run configure startup exists in wbstartup
-IF NOT EXISTS SYS:WBStartup/Run-Configure-Startup
-	setenv configure `RequestChoice "Re-configure startup" "Do you want to re-configure startup configuration?" "Yes|No"`
-	If $configure eq "0" 
-		SKIP end
-	EndIF
+; Delete Workbench first time configure startup, if it exists
+IF EXISTS SYS:WBStartup/Run-Configure-Startup
+	delete >NIL: SYS:WBStartup/Run-Configure-Startup#?
 EndIF
 
 
-; No prompt
-LAB noprompt
+; Configure Startup Menu
+; ----------------------
+LAB menu
+
+echo "Use Blizzard:       " NOLINE >T:Configure-Startup-Menu
+IF EXISTS S:Use-Blizzard
+	echo "Yes" NOLINE >>T:Configure-Startup-Menu
+	IF EXISTS S:MapRom-Blizzard-A1200-KS31
+		echo ", Map KS31" NOLINE >>T:Configure-Startup-Menu
+	EndIF
+	echo "" >>T:Configure-Startup-Menu
+Else
+	echo "No" >>T:Configure-Startup-Menu
+EndIF
+
+echo "Use ACA:            " NOLINE >>T:Configure-Startup-Menu
+IF EXISTS S:Use-ACA
+	echo "Yes" NOLINE >>T:Configure-Startup-Menu
+	IF EXISTS S:MapRom-ACA-A600-KS31
+		echo ", Map KS31" NOLINE >>T:Configure-Startup-Menu
+	EndIF
+	IF EXISTS S:MapRom-ACA-A1200-KS31
+		echo ", Map KS31" NOLINE >>T:Configure-Startup-Menu
+	EndIF
+	echo "" >>T:Configure-Startup-Menu
+Else
+	echo "No" >>T:Configure-Startup-Menu
+EndIF
+
+echo "Use Furia:          " NOLINE >>T:Configure-Startup-Menu
+IF EXISTS S:Use-Furia
+	echo "Yes" NOLINE >>T:Configure-Startup-Menu
+	IF EXISTS S:MapRom-Furia-A600-KS31
+		echo ", Map KS31" NOLINE >>T:Configure-Startup-Menu
+	EndIF
+	echo "" >>T:Configure-Startup-Menu
+Else
+	echo "No" >>T:Configure-Startup-Menu
+EndIF
+
+echo "Use 020+ CPU:       " NOLINE >>T:Configure-Startup-Menu
+IF EXISTS S:Use-020
+	echo "Yes" >>T:Configure-Startup-Menu
+Else
+	echo "No" >>T:Configure-Startup-Menu
+EndIF
+
+echo "Use FPU:            " NOLINE >>T:Configure-Startup-Menu
+IF EXISTS S:Use-FPU
+	echo "Yes" >>T:Configure-Startup-Menu
+Else
+	echo "No" >>T:Configure-Startup-Menu
+EndIF
+
+echo "Start ABS:          " NOLINE >>T:Configure-Startup-Menu
+IF EXISTS S:Start-ABS
+	echo "Yes" >>T:Configure-Startup-Menu
+Else
+	echo "No" >>T:Configure-Startup-Menu
+EndIF
+
+echo "Start AGS2 Games:   " NOLINE >>T:Configure-Startup-Menu
+IF EXISTS S:Start-AGS2Games
+	echo "Yes" >>T:Configure-Startup-Menu
+Else
+	echo "No" >>T:Configure-Startup-Menu
+EndIF
+
+echo "Start AGS2 Demos:   " NOLINE >>T:Configure-Startup-Menu
+IF EXISTS S:Start-AGS2Demos
+	echo "Yes" >>T:Configure-Startup-Menu
+Else
+	echo "No" >>T:Configure-Startup-Menu
+EndIF
+
+echo "Configure WHDLoad" >>T:Configure-Startup-Menu
+echo "Reset" >>T:Configure-Startup-Menu
+echo "Reboot" >>T:Configure-Startup-Menu
+echo "Exit" >>T:Configure-Startup-Menu
 
 
-; Reset startup with noprompt
-execute SYS:Programs/Configuration/Reset-Startup NOPROMPT
+; Show configure startup menu
+ReqList CLONERT BUTTONS I T:Configure-Startup-Menu O ENV:configurestartup H "Configure Startup"
 
+; Switch Use Blizzard
+IF $configurestartup eq "1" 
+	SKIP blizzard
+ENDIF 
 
-; Use Accelerator
-setenv useacc `RequestChoice "Use Accelerator" "Do you have an accelerator card installed?" "Yes|No"`
-If $useacc eq "0" 
-	SKIP cpufpu
-EndIf
+; Switch Use ACA
+IF $configurestartup eq "2" 
+	SKIP aca
+ENDIF 
+
+; Switch Use Furia
+IF $configurestartup eq "3" 
+	SKIP furia
+ENDIF 
+
+; Switch Use 020+ CPU
+IF $configurestartup eq "4" 
+	SKIP cpu
+ENDIF 
+
+; Switch Use FPU
+IF $configurestartup eq "5" 
+	SKIP fpu
+ENDIF 
+
+; Switch Start ABS
+IF $configurestartup eq "6" 
+	SKIP abs
+ENDIF 
+
+; Switch Start AGS2 Games
+IF $configurestartup eq "7" 
+	SKIP ags2games
+ENDIF 
+
+; Switch Start AGS2 Demos
+IF $configurestartup eq "8" 
+	SKIP ags2demos
+ENDIF 
+
+; Configure WHDLoad
+IF $configurestartup eq "9" 
+	SKIP whdload
+ENDIF 
+
+; Reset
+IF $configurestartup eq "10" 
+	execute SYS:Programs/Configuration/Reset-Startup NOPROMPT
+ENDIF 
+
+; Reboot
+IF $configurestartup eq "11"
+	echo "Rebooting..."
+	wait 1
+	reboot
+ENDIF 
+
+SKIP end
 
 
 ; Configure Blizzard
-setenv blizzard `RequestChoice "Use Blizzard" "Do you have a Blizzard accelerator card installed?" "Yes|No"`
-If $blizzard eq "1" 
-	echo "" > S:Use-Blizzard
+LAB blizzard
 
+IF EXISTS S:Use-Blizzard
+	delete >NIL: S:Use-Blizzard
+	delete >NIL: S:MapRom-Blizzard-A1200-KS31
+Else
+	echo "" > S:Use-Blizzard
+	
 	; Blizzard maprom A1200 Kickstart 3.1
 	setenv blizzardmap `RequestChoice "Blizzard Maprom" "Do you want Blizzard to maprom A1200 Kickstart 3.1?" "Yes|No"`
 	If $blizzardmap eq "1" 
-		echo "" > S:Use-Blizzard-A1200-KS31-MapRom
+		echo "" > S:MapRom-Blizzard-A1200-KS31
 	Else
-		; Delete "Use-Blizzard-A1200-KS31-MapRom" file
-		IF EXISTS S:Use-Blizzard-A1200-KS31-MapRom
-			delete >NIL: S:Use-Blizzard-A1200-KS31-MapRom
+		; Delete "MapRom-Blizzard-A1200-KS31" file
+		IF EXISTS S:MapRom-Blizzard-A1200-KS31
+			delete >NIL: S:MapRom-Blizzard-A1200-KS31
 		EndIF
 	EndIF
+EndIF
 
-	SKIP cpufpu
-Else
-	; Delete "Use-Blizzard" file
-	IF EXISTS S:Use-Blizzard
-		delete >NIL: S:Use-Blizzard
-	EndIF
-EndIf
+SKIP menu back
 
 
 ; Configure ACA
-setenv useaca `RequestChoice "Use ACA" "Do you have an ACA accelerator card installed?" "Yes|No"`
-If $useaca eq "1" 
+LAB aca
+
+IF EXISTS S:Use-ACA
+	delete >NIL: S:Use-ACA
+	delete >NIL: S:MapRom-ACA-A600-KS31
+	delete >NIL: S:MapRom-ACA-A1200-KS31
+Else
 	echo "" > S:Use-ACA
 
 	; ACA maprom A600 Kickstart 3.1
 	setenv acamaprom `RequestChoice "ACA Maprom" "Do you want ACA to maprom A600 Kickstart 3.1?" "Yes|No"`
 	If $acamaprom eq "1" 
-		echo "" > S:Use-ACA-A600-KS31-MapRom
+		echo "" > S:MapRom-ACA-A600-KS31
 		
-		SKIP cpufpu
+		SKIP menu back
 	Else
-		; Delete "Use-ACA-A600-KS31-MapRom" file
-		IF EXISTS S:Use-ACA-A600-KS31-MapRom
-			delete >NIL: S:Use-ACA-A600-KS31-MapRom
+		; Delete "MapRom-ACA-A600-KS31" file
+		IF EXISTS S:MapRom-ACA-A600-KS31
+			delete >NIL: S:MapRom-ACA-A600-KS31
 		EndIF
 	EndIF
 
 	; ACA maprom A1200 Kickstart 3.1
 	setenv acamaprom `RequestChoice "ACA Maprom" "Do you want ACA to maprom A1200 Kickstart 3.1?" "Yes|No"`
 	If $acamaprom eq "1" 
-		echo "" > S:Use-ACA-A1200-KS31-MapRom
+		echo "" > S:MapRom-ACA-A1200-KS31
 	Else
-		; Delete "Use-ACA-A1200-KS31-MapRom" file
-		IF EXISTS S:Use-ACA-A1200-KS31-MapRom
-			delete >NIL: S:Use-ACA-A1200-KS31-MapRom
+		; Delete "MapRom-ACA-A1200-KS31" file
+		IF EXISTS S:MapRom-ACA-A1200-KS31
+			delete >NIL: S:MapRom-ACA-A1200-KS31
 		EndIF
 	EndIF
+EndIF
 
-	SKIP cpufpu
-Else
-	; Delete "Use-ACA" file
-	IF EXISTS S:Use-ACA
-		delete >NIL: S:Use-ACA
-	EndIF
-EndIf
+SKIP menu back
 
 
 ; Configure Furia
-setenv usefuria `RequestChoice "Use Furia" "Do you have a Furia A600 accelerator card installed?" "Yes|No"`
-If $usefuria eq "1" 
+LAB furia
+
+IF EXISTS S:Use-Furia
+	delete >NIL: S:Use-Furia
+	delete >NIL: S:MapRom-Furia-A600-KS31
+Else
 	echo "" > S:Use-Furia
 
 	; Furia maprom A600 Kickstart 3.1
-	setenv furiamaprom `RequestChoice "Furia Maprom" "Do you want ACA to maprom A600 Kickstart 3.1?" "Yes|No"`
+	setenv furiamaprom `RequestChoice "Furia Maprom" "Do you want Furia to maprom A600 Kickstart 3.1?" "Yes|No"`
 	If $furiamaprom eq "1" 
-		echo "" > S:Use-Furia-A600-KS31-MapRom
+		echo "" > S:MapRom-Furia-A600-KS31
 	Else
-		; Delete "Use-Furia-A600-KS31-MapRom" file
-		IF EXISTS S:Use-Furia-A600-KS31-MapRom
-			delete >NIL: S:Use-Furia-A600-KS31-MapRom
+		; Delete "MapRom-Furia-A600-KS31" file
+		IF EXISTS S:MapRom-Furia-A600-KS31
+			delete >NIL: S:MapRom-Furia-A600-KS31
 		EndIF
 	EndIF
-Else
-	; Delete "Use-Furia" file
-	IF EXISTS S:Use-Furia
-		delete >NIL: S:Use-Furia
-	EndIF
 EndIf
 
-		
-; CPU & FPU
-LAB cpufpu
+SKIP menu back
 	
-	
+
 ; Configure CPU
-setenv cpu `RequestChoice "Use 020" "Do you have a 020+ CPU installed?" "Yes|No"`
-If $cpu eq "1" 
+; -------------
+LAB cpu
+
+IF EXISTS S:Use-020
+	delete >NIL: S:Use-020
+
+	Copy >NIL: SYS:Programs/Configuration/KingCON1.3/Handler/KingCON-handler L:KingCon-handler
+	Copy >NIL: SYS:Programs/Configuration/iconlib_46.4/icon.library_68000 Libs:icon.library
+Else
 	echo "" > S:Use-020
 
-	Copy >NIL: KingCON1.3/Handler/KingCON-handler.020 L:KingCon-handler
-	Copy >NIL: iconlib_46.4/icon.library_68020 Libs:icon.library
-Else
-	; Delete "Use-020" file
-	IF EXISTS S:Use-020
-		delete >NIL: S:Use-020
-	EndIF
+	Copy >NIL: SYS:Programs/Configuration/KingCON1.3/Handler/KingCON-handler.020 L:KingCon-handler
+	Copy >NIL: SYS:Programs/Configuration/iconlib_46.4/icon.library_68020 Libs:icon.library
+EndIF
 
-	Copy >NIL: KingCON1.3/Handler/KingCON-handler L:KingCon-handler
-	Copy >NIL: iconlib_46.4/icon.library_68000 Libs:icon.library
-EndIf
+SKIP menu back
 
 
 ; Configure FPU
-setenv fpu `RequestChoice "Use FPU" "Do you have a FPU installed?" "Yes|No"`
-If $fpu eq "1" 
+; -------------
+LAB fpu
+
+IF EXISTS S:Use-FPU
+	delete >NIL: S:Use-FPU
+
+	Copy >NIL: SYS:Programs/Configuration/guigfx_render_nofpu/ Libs:
+Else
 	echo "" > S:Use-FPU
 
-	Copy >NIL: guigfx_render_fpu/ Libs:
-Else
-	; Delete "Use-FPU" file
-	IF EXISTS S:Use-FPU
-		delete >NIL: S:Use-FPU
-	EndIF
+	Copy >NIL: SYS:Programs/Configuration/guigfx_render_fpu/ Libs:
+EndIF
 
-	Copy >NIL: guigfx_render_nofpu/ Libs:
+SKIP menu back
+
+
+; Configure WHDLoad
+; -----------------
+LAB whdload
+
+; Reset whdload.prefs
+Copy >NIL: SYS:Programs/Configuration/WHDLoad/WHDLoad.prefs S:
+
+; Select WHDLoad quit key
+setenv quitkey `RequestChoice "WHDLoad Quit Key" "Select global quit key for WHDLoad?" "F10|Help|Del|NumL|ScrL|SysRq|PrtSc|Default"`
+If $quitkey eq "1" 
+	echo "QuitKey=$59" >> S:WHDLoad.prefs
 EndIf
+If $quitkey eq "2" 
+	echo "QuitKey=$5f" >> S:WHDLoad.prefs
+EndIf
+If $quitkey eq "3" 
+	echo "QuitKey=$46" >> S:WHDLoad.prefs
+EndIf
+If $quitkey eq "4" 
+	echo "QuitKey=$5a" >> S:WHDLoad.prefs
+EndIf
+If $quitkey eq "5" 
+	echo "QuitKey=$5b" >> S:WHDLoad.prefs
+EndIf
+If $quitkey eq "6" 
+	echo "QuitKey=$5c" >> S:WHDLoad.prefs
+EndIf
+If $quitkey eq "7" 
+	echo "QuitKey=$5d" >> S:WHDLoad.prefs
+EndIf
+
+SKIP menu back
 
 
 ; Configure Amiga Boot Selector
-setenv abs `RequestChoice "Start ABS" "Do you want start Amiga Boot Selector before loading Workbench?" "Yes|No"`
-If $abs eq "1" 
-	echo "" > S:Start-ABS
+; -----------------------------
+LAB abs
 
-	SKIP end
+IF EXISTS S:Start-ABS
+	delete >NIL: S:Start-ABS
 Else
-	; Delete "Start-ABS" file
-	IF EXISTS S:Start-ABS
-		delete >NIL: S:Start-ABS
-	EndIF
-EndIf
+	echo "" > S:Start-ABS
+	delete >NIL: S:Start-AGS2Games
+	delete >NIL: S:Start-AGS2Demos
+EndIF
+
+SKIP menu back
 
 	
 ; Configure AGS2 Games
-setenv ags2games `RequestChoice "Start AGS2 Games" "Do you want start AGS2 Games before loading Workbench?" "Yes|No"`
-If $ags2games eq "1" 
-	echo "" > S:Start-AGS2Games
+; --------------------
+LAB ags2games
 
-	SKIP end
+IF EXISTS S:Start-AGS2Games
+	delete >NIL: S:Start-AGS2Games
 Else
-	; Delete "Start-AGS2Games" file
-	IF EXISTS S:Start-AGS2Games
-		delete >NIL: S:Start-AGS2Games
-	EndIF
-EndIf
+	echo "" > S:Start-AGS2Games
+	delete >NIL: S:Start-ABS
+	delete >NIL: S:Start-AGS2Demos
+EndIF
+
+SKIP menu back
 
 		
 ; Configure AGS2 Demos
-setenv ags2demos `RequestChoice "Start AGS2 Demos" "Do you want start AGS2 Demos before loading Workbench?" "Yes|No"`
-If $ags2demos eq "1" 
-	echo "" > S:Start-AGS2Demos
+; --------------------
+LAB ags2demos
+
+IF EXISTS S:Start-AGS2Demos
+	delete >NIL: S:Start-AGS2Demos
 Else
-	; Delete "Start-AGS2Demos" file
-	IF EXISTS S:Start-AGS2Demos
-		delete >NIL: S:Start-AGS2Demos
-	EndIF
-EndIf
+	echo "" > S:Start-AGS2Demos
+	delete >NIL: S:Start-ABS
+	delete >NIL: S:Start-AGS2Games
+EndIF
+
+SKIP menu back
 
 
 ; End
 LAB end
-
-
-; Delete Workbench first time configure startup, if it exists
-IF EXISTS SYS:WBStartup/Run-Configure-Startup
-	delete >NIL: SYS:WBStartup/Run-Configure-Startup#?
-EndIF
