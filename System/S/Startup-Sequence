@@ -14,7 +14,7 @@ IF $MouseInput EQ 2
 	Assign >NIL: T: RAM:T
 
 	cd SYS:Programs/Configuration
-	execute Configure-Startup NOPROMPT
+	execute Configure-Startup
 
 	reboot
 ENDIF
@@ -38,7 +38,7 @@ IF EXISTS S:Use-Furia
 ENDIF
 
 
-; Load scsi.device and icon.library, if not "Blizzard-Run" file exists
+; Load scsi.device and icon.library, if not "Use-Blizzard" file exists
 IF NOT EXISTS S:Use-Blizzard
 	C:LoadModule >NIL: DEVS:scsi.device LIBS:icon.library
 ENDIF

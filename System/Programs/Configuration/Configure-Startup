@@ -143,7 +143,7 @@ ENDIF
 
 ; Reset
 IF $configurestartup eq "10" 
-	execute SYS:Programs/Configuration/Reset-Startup NOPROMPT
+	execute SYS:Programs/Configuration/Reset-Startup
 ENDIF 
 
 ; Reboot
