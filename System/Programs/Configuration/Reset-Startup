@@ -58,6 +58,12 @@ EndIF
 Copy >NIL: SYS:Programs/Configuration/guigfx_render_nofpu/ Libs:
 
 
+; Reset OS patches
+IF EXISTS S:Use-OS-Patches
+	delete >NIL: S:Use-OS-Patches
+EndIF
+
+
 ; Reset WHDLoad
 Copy >NIL: SYS:Programs/Configuration/WHDLoad/WHDLoad.prefs S:
 

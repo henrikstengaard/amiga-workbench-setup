@@ -66,6 +66,13 @@ Else
 	echo "No" >>T:Configure-Startup-Menu
 EndIF
 
+echo "Use OS patches:     " NOLINE >>T:Configure-Startup-Menu
+IF EXISTS S:Use-OS-Patches
+	echo "Yes" >>T:Configure-Startup-Menu
+Else
+	echo "No" >>T:Configure-Startup-Menu
+EndIF
+
 echo "Start ABS:          " NOLINE >>T:Configure-Startup-Menu
 IF EXISTS S:Start-ABS
 	echo "Yes" >>T:Configure-Startup-Menu
@@ -121,33 +128,38 @@ IF $configurestartup eq "5"
 	SKIP fpu
 ENDIF 
 
-; Switch Start ABS
+; Switch Use OS patches
 IF $configurestartup eq "6" 
+	SKIP ospatches
+ENDIF 
+
+; Switch Start ABS
+IF $configurestartup eq "7" 
 	SKIP abs
 ENDIF 
 
 ; Switch Start AGS2 Games
-IF $configurestartup eq "7" 
+IF $configurestartup eq "8" 
 	SKIP ags2games
 ENDIF 
 
 ; Switch Start AGS2 Demos
-IF $configurestartup eq "8" 
+IF $configurestartup eq "9" 
 	SKIP ags2demos
 ENDIF 
 
 ; Configure WHDLoad
-IF $configurestartup eq "9" 
+IF $configurestartup eq "10" 
 	SKIP whdload
 ENDIF 
 
 ; Reset
-IF $configurestartup eq "10" 
+IF $configurestartup eq "11" 
 	execute SYS:Programs/Configuration/Reset-Startup
 ENDIF 
 
 ; Reboot
-IF $configurestartup eq "11"
+IF $configurestartup eq "12"
 	echo "Rebooting..."
 	wait 1
 	reboot
@@ -273,6 +285,18 @@ Else
 	echo "" > S:Use-FPU
 
 	Copy >NIL: SYS:Programs/Configuration/guigfx_render_fpu/ Libs:
+EndIF
+
+SKIP menu back
+
+
+; Configure OS Patches
+LAB ospatches
+
+IF EXISTS S:Use-OS-Patches
+	delete >NIL: S:Use-OS-Patches
+Else
+	echo "" > S:Use-OS-Patches
 EndIF
 
 SKIP menu back

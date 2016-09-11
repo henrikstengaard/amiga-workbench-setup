@@ -2,8 +2,8 @@
 ; ----------------
 
 
-; Use Workbench patches, if 020+ cpu is configured
-IF EXISTS S:Use-020
+; Use OS patches
+IF EXISTS S:Use-OS-Patches
 	C:blazewcp
 	C:FBlit
 	C:FText
