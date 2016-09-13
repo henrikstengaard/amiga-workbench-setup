@@ -1,12 +1,14 @@
 ; Startup-Sequence
 ; ----------------
+; Author: Henrik Noerfjand Stengaard
+; Date: 2016-09-13
 
 
 ; Get mouse button pressed
 C:GetMouseInput LOCAL
 
 
-; Run configure startup, if right mouse button is hold down during startup (for recovery)
+; Run configure setup, if right mouse button is hold down during startup (for recovery)
 IF $MouseInput EQ 2
 	C:MakeDir RAM:T RAM:Clipboards RAM:ENV RAM:ENV/Sys
 	Assign ENV: RAM:Env
@@ -14,7 +16,9 @@ IF $MouseInput EQ 2
 	Assign >NIL: T: RAM:T
 
 	cd SYS:Programs/Configuration
-	execute S:Configure-Startup
+	execute S:Configure-Setup
+	
+	reboot
 ENDIF
 
 
@@ -36,9 +40,27 @@ IF EXISTS S:Use-Furia
 ENDIF
 
 
-; Load scsi.device and icon.library, if not "Use-Blizzard" file exists
+; Load scsi.device and icon.library using loadmodule, if not "Use-Blizzard" file exists
 IF NOT EXISTS S:Use-Blizzard
-	C:LoadModule >NIL: DEVS:scsi.device LIBS:icon.library
+	; Add loadmodule scsi.device, if "Load-ScsiDevice" and "DEVS:scsi.device" files exists
+	IF EXISTS S:Load-ScsiDevice
+		IF EXISTS DEVS:scsi.device
+			echo "C:LoadModule DEVS:scsi.device" NOLINE >RAM:Load-Modules
+		EndIF
+	EndIF
+
+	; Add loadmodule icon.library, if "Load-IconLibrary" file exists
+	IF EXISTS S:Load-IconLibrary
+		IF EXISTS RAM:Load-Modules
+			echo " LIBS:icon.library" NOLINE >>RAM:Load-Modules
+		Else
+			echo "C:LoadModule LIBS:icon.library" NOLINE >RAM:Load-Modules
+		EndIF
+	EndIF
+	
+	IF EXISTS RAM:Load-Modules
+		execute RAM:Load-Modules
+	EndIF
 ENDIF
 
 
@@ -92,20 +114,21 @@ IF EXISTS S:Start-ABS
 ENDIF
 
 
-; Execute Arcade Game Selector 2 Games script, if "Start-AGS2Games" file exists
+; Start Arcade Game Selector 2 Games script, if "Start-AGS2Games" file exists
 IF EXISTS S:Start-AGS2Games
 	execute S:AGS2Games
 ENDIF
 
 
-; Execute Arcade Game Selector 2 Demos script, if "Start-AGS2Demos" file exists
+; Start Arcade Game Selector 2 Demos script, if "Start-AGS2Demos" file exists
 IF EXISTS S:Start-AGS2Demos
 	execute S:AGS2Demos
 ENDIF
 
 
-; Start workbench
+; Start Workbench
 execute S:WB
 
 
+; End
 LAB end

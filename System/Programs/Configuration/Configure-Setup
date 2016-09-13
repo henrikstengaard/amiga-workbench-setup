@@ -1,17 +1,18 @@
 ; Configure Setup Script
 ; ----------------------
 ; Author: Henrik Noerfjand Stengaard
-; Date: 2016-09-06
+; Date: 2016-09-13
 ;
 ; This script configures setup of hardware, devices, boot sequence and whdload.
 ; Hardware menu contains configuration of accelerator cards Blizzard, ACA, Furia. It also has options for CPU, FPU and OS patches.
-; Device & Library menu contains configuration of scsi.device and icon.library.
+; Device & Library menu contains configuration of scsi.device, icon.library and select scsi.device.
 ; Boot Sequence menu contains configuration of Amiga Boot Selector, Arcade Game Selector 2 for Games and Arcade Game Selector 2 for Demos. 
+; WHDLoad menu contains configuration of WHDLoad quit key.
 
 
-; Delete Workbench first time configure startup, if it exists
-IF EXISTS SYS:WBStartup/Run-Configure-Startup
-	delete >NIL: SYS:WBStartup/Run-Configure-Startup#?
+; Delete Workbench startup of configure setup, if it exists
+IF EXISTS SYS:WBStartup/Run-Configure-Setup
+	delete >NIL: SYS:WBStartup/Run-Configure-Setup#?
 EndIF
 
 
@@ -31,7 +32,7 @@ echo "Exit" >>T:mainmenu
 C:ReqList CLONERT BUTTONS I T:mainmenu O ENV:mainmenu H "Configure Setup"
 
 ; Delete main menu
-delete T:mainmenu
+delete >NIL: T:mainmenu
 
 
 ; Hardware
@@ -56,7 +57,7 @@ ENDIF
 
 ; Reset
 IF $mainmenu eq "5" 
-	execute SYS:Programs/Configuration/Reset-Startup
+	execute SYS:Programs/Configuration/Reset-Setup
 ENDIF 
 
 ; Reboot
@@ -137,7 +138,7 @@ echo "Back" >>T:hardwaremenu
 C:ReqList CLONERT BUTTONS I T:hardwaremenu O ENV:hardwaremenu H "Hardware"
 
 ; Delete hardware menu
-delete T:hardwaremenu
+delete >NIL: T:hardwaremenu
 
 
 ; Switch Use Blizzard
@@ -194,13 +195,14 @@ Else
 EndIF
 
 echo "Select scsi.device" >>T:devicelibrarymenu
+echo "Back" >>T:devicelibrarymenu
 
 
 ; Show device & library menu
 C:ReqList CLONERT BUTTONS I T:devicelibrarymenu O ENV:devicelibrarymenu H "Device & Library"
 
 ; Delete hardware menu
-delete T:devicelibrarymenu
+delete >NIL: T:devicelibrarymenu
 
 
 ; Switch Load scsi.device
@@ -254,7 +256,7 @@ echo "Back" >>T:bootsequencemenu
 C:ReqList CLONERT BUTTONS I T:bootsequencemenu O ENV:bootsequencemenu H "Boot Sequence"
 
 ; Delete boot sequence menu
-delete T:bootsequencemenu
+delete >NIL: T:bootsequencemenu
 
 
 ; Switch Start ABS
@@ -288,7 +290,7 @@ echo "Back" >>T:whdloadmenu
 C:ReqList CLONERT BUTTONS I T:whdloadmenu O ENV:whdloadmenu H "WHDLoad"
 
 ; Delete whdload menu
-delete T:whdloadmenu
+delete >NIL: T:whdloadmenu
 
 ; WHDLoad Quit Key
 IF $whdloadmenu eq "1" 
@@ -496,11 +498,11 @@ echo "v44.20 Doobrey A1200    " >>T:scsidevicemenu
 C:ReqList CLONERT BUTTONS I T:scsidevicemenu O ENV:scsidevicemenu H "Select scsi.device"
 
 ; Delete select scsi.device menu
-delete T:scsidevicemenu
+delete >NIL: T:scsidevicemenu
 
 ; Built-in (Kickstart ROM)
 IF $bootsequencemenu eq "1" 
-	delete devs:scsi.device
+	delete >NIL: devs:scsi.device
 ENDIF 
 
 ; v43.45 Chris/Toni A1200

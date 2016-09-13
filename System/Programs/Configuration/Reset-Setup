@@ -1,19 +1,20 @@
 ; Reset Startup Script
 ; --------------------
 ; Author: Henrik Noerfjand Stengaard
-; Date: 2016-09-06
+; Date: 2016-09-13
 ;
-; This script reset configuration of startup sequence Blizzard, ACA, Furia, CPU, FPU, Amiga Boot Selector and AGS2 for games and demos. 
+; This script reset configuration setup of hardware, devices, boot sequence and whdload.
 
 
 ; Reset configuration
-setenv continue `RequestChoice "Reset startup" "Are you sure you want to reset startup configuration?" "Yes|No"`
+setenv continue `RequestChoice "Reset setup" "Are you sure you want to reset configuration setup?" "Yes|No"`
 If $continue eq "0" 
 	SKIP end
 EndIf
 
 
 ; Reset Blizzard
+; --------------
 IF EXISTS S:Use-Blizzard
 	delete >NIL: S:Use-Blizzard
 EndIF
@@ -23,6 +24,7 @@ EndIF
 
 
 ; Reset ACA
+; ---------
 IF EXISTS S:Use-ACA
 	delete >NIL: S:Use-ACA
 EndIF
@@ -35,6 +37,7 @@ EndIF
 
 
 ; Reset Furia
+; -----------
 IF EXISTS S:Use-Furia
 	delete >NIL: S:Use-Furia
 EndIF
@@ -44,6 +47,7 @@ EndIF
 
 
 ; Reset CPU
+; ---------
 IF EXISTS S:Use-020
 	delete >NIL: S:Use-020
 EndIF
@@ -52,6 +56,7 @@ Copy >NIL: SYS:Programs/Configuration/iconlib_46.4/icon.library_68000 Libs:icon.
 
 
 ; Reset FPU
+; ---------
 IF EXISTS S:Use-FPU
 	delete >NIL: S:Use-FPU
 EndIF
@@ -59,6 +64,7 @@ Copy >NIL: SYS:Programs/Configuration/guigfx_render_nofpu/ Libs:
 
 
 ; Reset OS patches
+; ----------------
 IF EXISTS S:Use-OS-Patches
 	delete >NIL: S:Use-OS-Patches
 EndIF
@@ -86,7 +92,7 @@ delete >NIL: scsi.device
 ; Reset Amiga Boot Selector
 ; -------------------------
 IF NOT EXISTS S:Start-ABS
-	echo "" >NIL: S:Start-ABS
+	echo "" >S:Start-ABS
 EndIF
 
 
