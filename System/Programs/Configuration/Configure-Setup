@@ -236,17 +236,25 @@ Else
 EndIF
 
 echo "Start AGS2 Games:   " NOLINE >>T:bootsequencemenu
-IF EXISTS S:Start-AGS2Games
-	echo "Yes" >>T:bootsequencemenu
+IF EXISTS ENV:ags2gamespath
+	IF EXISTS S:Start-AGS2Games
+		echo "Yes" >>T:bootsequencemenu
+	Else
+		echo "No" >>T:bootsequencemenu
+	EndIF
 Else
-	echo "No" >>T:bootsequencemenu
+	echo "N/A" >>T:bootsequencemenu
 EndIF
 
 echo "Start AGS2 Demos:   " NOLINE >>T:bootsequencemenu
-IF EXISTS S:Start-AGS2Demos
-	echo "Yes" >>T:bootsequencemenu
+IF EXISTS ENV:ags2demospath
+	IF EXISTS S:Start-AGS2Demos
+		echo "Yes" >>T:bootsequencemenu
+	Else
+		echo "No" >>T:bootsequencemenu
+	EndIF
 Else
-	echo "No" >>T:bootsequencemenu
+	echo "N/A" >>T:bootsequencemenu
 EndIF
 
 echo "Back" >>T:bootsequencemenu
@@ -587,12 +595,14 @@ SKIP bootsequencemenu back
 ; --------------------
 LAB ags2games
 
-IF EXISTS S:Start-AGS2Games
-	delete >NIL: S:Start-AGS2Games
-Else
-	echo "" > S:Start-AGS2Games
-	delete >NIL: S:Start-ABS
-	delete >NIL: S:Start-AGS2Demos
+IF EXISTS ENV:ags2gamespath
+	IF EXISTS S:Start-AGS2Games
+		delete >NIL: S:Start-AGS2Games
+	Else
+		echo "" > S:Start-AGS2Games
+		delete >NIL: S:Start-ABS
+		delete >NIL: S:Start-AGS2Demos
+	EndIF
 EndIF
 
 SKIP bootsequencemenu back
@@ -602,12 +612,14 @@ SKIP bootsequencemenu back
 ; --------------------
 LAB ags2demos
 
-IF EXISTS S:Start-AGS2Demos
-	delete >NIL: S:Start-AGS2Demos
-Else
-	echo "" > S:Start-AGS2Demos
-	delete >NIL: S:Start-ABS
-	delete >NIL: S:Start-AGS2Games
+IF EXISTS ENV:ags2demospath
+	IF EXISTS S:Start-AGS2Demos
+		delete >NIL: S:Start-AGS2Demos
+	Else
+		echo "" > S:Start-AGS2Demos
+		delete >NIL: S:Start-ABS
+		delete >NIL: S:Start-AGS2Games
+	EndIF
 EndIF
 
 SKIP bootsequencemenu back
