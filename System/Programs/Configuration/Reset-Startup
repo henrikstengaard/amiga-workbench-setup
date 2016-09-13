@@ -64,27 +64,51 @@ IF EXISTS S:Use-OS-Patches
 EndIF
 
 
-; Reset WHDLoad
-Copy >NIL: SYS:Programs/Configuration/WHDLoad/WHDLoad.prefs S:
+; Reset scsi.device
+; ------------------
+IF EXISTS S:Load-ScsiDevice
+	delete >NIL: S:Load-ScsiDevice
+EndIF
+
+
+; Reset icon.library
+; ------------------
+IF EXISTS S:Load-IconLibrary
+	delete >NIL: S:Load-IconLibrary
+EndIF
+
+
+; Reset scsi.device
+; -----------------
+delete >NIL: scsi.device
 
 
 ; Reset Amiga Boot Selector
-IF EXISTS S:Start-ABS
-	delete >NIL: S:Start-ABS
+; -------------------------
+IF NOT EXISTS S:Start-ABS
+	echo "" >NIL: S:Start-ABS
 EndIF
 
 
 ; Reset AGS2 Games
+; ----------------
 IF EXISTS S:Start-AGS2Games
 	delete >NIL: S:Start-AGS2Games
 EndIF
 
 
 ; Reset AGS2 Demos
+; ----------------
 IF EXISTS S:Start-AGS2Demos
 	delete >NIL: S:Start-AGS2Demos
 EndIF
 
 
+; Reset WHDLoad
+; -------------
+Copy >NIL: SYS:Programs/Configuration/WHDLoad/WHDLoad.prefs S:
+
+
 ; End
+; ---
 LAB end

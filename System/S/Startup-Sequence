@@ -14,9 +14,7 @@ IF $MouseInput EQ 2
 	Assign >NIL: T: RAM:T
 
 	cd SYS:Programs/Configuration
-	execute Configure-Startup
-
-	reboot
+	execute S:Configure-Startup
 ENDIF
 
 
