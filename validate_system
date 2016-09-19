@@ -32,7 +32,7 @@ ELSE
 ENDIF
 IF EXISTS "Disk.info"
   SET md5 `C:md5 "Disk.info"`
-  IF NOT "$md5" eq "91 0c 5a 2f f3 68 57 18 fc db dd 0b 91 0b b6 eb"
+  IF NOT "$md5" eq "5c 01 2d 1f 9c 6d 3a a2 23 d9 6f 14 ee a1 fd dd"
     ECHO "File 'Disk.info' has invalid md5 checksum"
   ENDIF
 ELSE
@@ -56,7 +56,7 @@ ELSE
 ENDIF
 IF EXISTS "Games.info"
   SET md5 `C:md5 "Games.info"`
-  IF NOT "$md5" eq "8c ab fe 87 39 d2 28 f9 9f 30 6b 20 37 45 c8 b7"
+  IF NOT "$md5" eq "e8 a5 5e 07 82 a6 19 91 59 9c 12 db d2 1f b8 c5"
     ECHO "File 'Games.info' has invalid md5 checksum"
   ENDIF
 ELSE
@@ -112,7 +112,7 @@ ELSE
 ENDIF
 IF EXISTS "Programs.info"
   SET md5 `C:md5 "Programs.info"`
-  IF NOT "$md5" eq "d3 41 93 27 d0 58 24 eb a0 c5 4c 0e 0a 4b 8b 8e"
+  IF NOT "$md5" eq "c8 ac 80 13 22 77 79 17 72 45 cd 4e 60 d8 33 6f"
     ECHO "File 'Programs.info' has invalid md5 checksum"
   ENDIF
 ELSE
@@ -630,6 +630,14 @@ IF EXISTS "Classes/Codecs/picture.codec"
 ELSE
   ECHO "File 'Classes/Codecs/picture.codec' doesn't exist"
 ENDIF
+IF EXISTS "Demos/AGS2 WHDLoad List.info"
+  SET md5 `C:md5 "Demos/AGS2 WHDLoad List.info"`
+  IF NOT "$md5" eq "ba 10 aa 2c d7 7c 61 68 9b 11 d6 3b 95 23 04 d2"
+    ECHO "File 'Demos/AGS2 WHDLoad List.info' has invalid md5 checksum"
+  ENDIF
+ELSE
+  ECHO "File 'Demos/AGS2 WHDLoad List.info' doesn't exist"
+ENDIF
 IF EXISTS "Demos/AGS2Demos"
   SET md5 `C:md5 "Demos/AGS2Demos"`
   IF NOT "$md5" eq "91 b2 29 fe 58 bf 4e 86 3d 61 2b 0c b6 d1 86 2c"
@@ -640,7 +648,7 @@ ELSE
 ENDIF
 IF EXISTS "Demos/AGS2Demos.info"
   SET md5 `C:md5 "Demos/AGS2Demos.info"`
-  IF NOT "$md5" eq "9b ce 19 8a d7 b7 31 b3 54 b3 76 97 4c 24 6b e6"
+  IF NOT "$md5" eq "dc ab 68 6d f8 ca c2 4c cb ad cf d7 7d d1 22 59"
     ECHO "File 'Demos/AGS2Demos.info' has invalid md5 checksum"
   ENDIF
 ELSE
@@ -662,6 +670,14 @@ IF EXISTS "Demos/iGame"
 ELSE
   ECHO "File 'Demos/iGame' doesn't exist"
 ENDIF
+IF EXISTS "Demos/iGame WHDLoad List.info"
+  SET md5 `C:md5 "Demos/iGame WHDLoad List.info"`
+  IF NOT "$md5" eq "73 93 93 ed be e5 0b 26 4c 3c c3 67 a2 c3 fe 6e"
+    ECHO "File 'Demos/iGame WHDLoad List.info' has invalid md5 checksum"
+  ENDIF
+ELSE
+  ECHO "File 'Demos/iGame WHDLoad List.info' doesn't exist"
+ENDIF
 IF EXISTS "Demos/igame.iff"
   SET md5 `C:md5 "Demos/igame.iff"`
   IF NOT "$md5" eq "49 e7 da 06 0e 8b d5 d2 ce 51 a8 ab b4 ce b9 62"
@@ -672,7 +688,7 @@ ELSE
 ENDIF
 IF EXISTS "Demos/iGame.info"
   SET md5 `C:md5 "Demos/iGame.info"`
-  IF NOT "$md5" eq "b0 8d 68 16 4d 82 53 50 dc 77 ba 69 1b 46 ee f4"
+  IF NOT "$md5" eq "72 c5 a8 dc bb 9d 8a b0 6c 4c 4f 77 70 e2 b1 9d"
     ECHO "File 'Demos/iGame.info' has invalid md5 checksum"
   ENDIF
 ELSE
@@ -1414,6 +1430,14 @@ IF EXISTS "Devs/Printers/Generic.info"
 ELSE
   ECHO "File 'Devs/Printers/Generic.info' doesn't exist"
 ENDIF
+IF EXISTS "Games/AGS2 WHDLoad List.info"
+  SET md5 `C:md5 "Games/AGS2 WHDLoad List.info"`
+  IF NOT "$md5" eq "cd 76 f4 b0 a9 df a8 04 e7 48 76 32 34 46 9b 52"
+    ECHO "File 'Games/AGS2 WHDLoad List.info' has invalid md5 checksum"
+  ENDIF
+ELSE
+  ECHO "File 'Games/AGS2 WHDLoad List.info' doesn't exist"
+ENDIF
 IF EXISTS "Games/AGS2Games"
   SET md5 `C:md5 "Games/AGS2Games"`
   IF NOT "$md5" eq "dc 69 1f 1e fe 1c ad 34 67 c8 46 0c 41 6b c3 a1"
@@ -1424,7 +1448,7 @@ ELSE
 ENDIF
 IF EXISTS "Games/AGS2Games.info"
   SET md5 `C:md5 "Games/AGS2Games.info"`
-  IF NOT "$md5" eq "9b ce 19 8a d7 b7 31 b3 54 b3 76 97 4c 24 6b e6"
+  IF NOT "$md5" eq "4a 0c f7 b9 8c 03 cc e0 1b 87 3e 8a 81 80 3c 62"
     ECHO "File 'Games/AGS2Games.info' has invalid md5 checksum"
   ENDIF
 ELSE
@@ -1446,6 +1470,14 @@ IF EXISTS "Games/iGame"
 ELSE
   ECHO "File 'Games/iGame' doesn't exist"
 ENDIF
+IF EXISTS "Games/iGame WHDLoad List.info"
+  SET md5 `C:md5 "Games/iGame WHDLoad List.info"`
+  IF NOT "$md5" eq "a7 4b 03 d5 26 43 28 ea 3b 9f 28 5a c8 7b 84 44"
+    ECHO "File 'Games/iGame WHDLoad List.info' has invalid md5 checksum"
+  ENDIF
+ELSE
+  ECHO "File 'Games/iGame WHDLoad List.info' doesn't exist"
+ENDIF
 IF EXISTS "Games/igame.iff"
   SET md5 `C:md5 "Games/igame.iff"`
   IF NOT "$md5" eq "49 e7 da 06 0e 8b d5 d2 ce 51 a8 ab b4 ce b9 62"
@@ -1456,7 +1488,7 @@ ELSE
 ENDIF
 IF EXISTS "Games/iGame.info"
   SET md5 `C:md5 "Games/iGame.info"`
-  IF NOT "$md5" eq "b0 8d 68 16 4d 82 53 50 dc 77 ba 69 1b 46 ee f4"
+  IF NOT "$md5" eq "1c de 58 37 8e 94 ff 3f 8a 24 be fb df b2 f5 39"
     ECHO "File 'Games/iGame.info' has invalid md5 checksum"
   ENDIF
 ELSE
@@ -9064,7 +9096,7 @@ ELSE
 ENDIF
 IF EXISTS "Programs/Configuration/Configure-Setup"
   SET md5 `C:md5 "Programs/Configuration/Configure-Setup"`
-  IF NOT "$md5" eq "39 b7 69 6a fd a9 80 20 ee 90 7e 95 a2 38 73 2c"
+  IF NOT "$md5" eq "22 f0 ce 7f 3e c8 cb 1e 26 90 54 cb 37 ee c9 1e"
     ECHO "File 'Programs/Configuration/Configure-Setup' has invalid md5 checksum"
   ENDIF
 ELSE
@@ -13342,6 +13374,14 @@ IF EXISTS "S/Boot.abs"
 ELSE
   ECHO "File 'S/Boot.abs' doesn't exist"
 ENDIF
+IF EXISTS "S/first-boot"
+  SET md5 `C:md5 "S/first-boot"`
+  IF NOT "$md5" eq "68 b3 29 da 98 93 e3 40 99 c7 d8 ad 5c b9 c9 40"
+    ECHO "File 'S/first-boot' has invalid md5 checksum"
+  ENDIF
+ELSE
+  ECHO "File 'S/first-boot' doesn't exist"
+ENDIF
 IF EXISTS "S/Furia"
   SET md5 `C:md5 "S/Furia"`
   IF NOT "$md5" eq "d0 b2 85 bf 94 49 a8 a9 65 86 11 24 0b db 7e eb"
@@ -13352,7 +13392,7 @@ ELSE
 ENDIF
 IF EXISTS "S/Startup-Sequence"
   SET md5 `C:md5 "S/Startup-Sequence"`
-  IF NOT "$md5" eq "af 97 09 c2 72 4f c0 14 57 84 12 76 88 af 55 5b"
+  IF NOT "$md5" eq "10 3a 23 fd b1 70 f0 12 d4 b9 bd fa 5e 67 db 7f"
     ECHO "File 'S/Startup-Sequence' has invalid md5 checksum"
   ENDIF
 ELSE
@@ -14437,20 +14477,4 @@ IF EXISTS "Utilities/SnoopDos.info"
   ENDIF
 ELSE
   ECHO "File 'Utilities/SnoopDos.info' doesn't exist"
-ENDIF
-IF EXISTS "WBStartup/Run-Configure-Setup"
-  SET md5 `C:md5 "WBStartup/Run-Configure-Setup"`
-  IF NOT "$md5" eq "4b 16 5b 30 db 82 5e e9 d4 76 8f 41 f0 0e 2b 93"
-    ECHO "File 'WBStartup/Run-Configure-Setup' has invalid md5 checksum"
-  ENDIF
-ELSE
-  ECHO "File 'WBStartup/Run-Configure-Setup' doesn't exist"
-ENDIF
-IF EXISTS "WBStartup/Run-Configure-Setup.info"
-  SET md5 `C:md5 "WBStartup/Run-Configure-Setup.info"`
-  IF NOT "$md5" eq "8a 2a 54 48 e4 b9 62 9e 40 e3 ec 21 33 23 de ba"
-    ECHO "File 'WBStartup/Run-Configure-Setup.info' has invalid md5 checksum"
-  ENDIF
-ELSE
-  ECHO "File 'WBStartup/Run-Configure-Setup.info' doesn't exist"
 ENDIF

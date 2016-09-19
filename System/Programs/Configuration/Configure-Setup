@@ -10,9 +10,9 @@
 ; WHDLoad menu contains configuration of WHDLoad quit key.
 
 
-; Delete Workbench startup of configure setup, if it exists
-IF EXISTS SYS:WBStartup/Run-Configure-Setup
-	delete >NIL: SYS:WBStartup/Run-Configure-Setup#?
+; Delete "first-boot" file, if it exists
+IF EXISTS S:first-boot
+	delete >NIL: S:first-boot
 EndIF
 
 
@@ -62,10 +62,11 @@ ENDIF
 
 ; Reboot
 IF $mainmenu eq "6"
-	echo "Rebooting..."
-	wait 1
+	echo "Rebooting in 10 seconds..."
+	wait 10
 	reboot
 ENDIF 
+
 
 SKIP end
 
