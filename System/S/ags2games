@@ -2,16 +2,26 @@
 ; -------------------------------------------
 
 
+; End script, if ags2 games path is not defined
+IF NOT EXISTS ENV:ags2gamespath
+	SKIP end
+ENDIF
+
+
 ; Assign AGS
 Assign AGS: $ags2gamespath
 
 
 ; Copy whdload args to env, if it exists. Otherwise use default
 IF EXISTS AGS:whdloadargs
-  copy AGS:whdloadargs ENV:whdloadargs
+  copy >NIL: AGS:whdloadargs ENV:whdloadargs
 ELSE
   setenv whdloadargs ""
 ENDIF
+
+
+; Set menu path to ags2 games path
+setenv menupath "$ags2gamespath"
 
 
 ; Start AGS2
@@ -22,3 +32,7 @@ ENDIF
 
 ; Remove AGS assign
 ASSIGN AGS: $ags2gamespath REMOVE
+
+
+; End
+LAB end

@@ -103,6 +103,14 @@ IF EXISTS S:Start-AGS2Games
 EndIF
 
 
+; Reset Multiboot
+; ---------------
+IF EXISTS S:Start-Multiboot
+	delete >NIL: S:Start-Multiboot
+EndIF
+copy >NIL: S:StartUp.Games S:StartUp.Default
+
+
 ; Reset AGS2 Demos
 ; ----------------
 IF EXISTS S:Start-AGS2Demos

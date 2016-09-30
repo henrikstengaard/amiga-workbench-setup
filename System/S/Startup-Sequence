@@ -44,6 +44,20 @@ reboot
 LAB startup
 
 
+; Execute remove AGS2 favourites
+IF EXISTS S:RemoveAgs2Favourites
+	execute S:RemoveAgs2Favourites
+	delete >NIL: S:RemoveAgs2Favourites
+ENDIF
+
+
+; Execute remove AMS favourites
+IF EXISTS S:RemoveAmsFavourites
+	execute S:RemoveAmsFavourites
+	delete >NIL: S:RemoveAmsFavourites
+ENDIF
+
+
 ; Execute Blizzard script, if "Use-Blizzard" file exists
 IF EXISTS S:Use-Blizzard
    execute S:Blizzard
@@ -132,6 +146,13 @@ execute S:User-Env
 IF EXISTS S:Start-ABS
 	C:abs
 	execute S:Boot.abs
+	SKIP end
+ENDIF
+
+
+; Start Multiboot, if "Start-Multiboot" file exists
+IF EXISTS S:Start-Multiboot
+	execute S:Multiboot
 	SKIP end
 ENDIF
 

@@ -236,6 +236,15 @@ Else
 	echo "No" >>T:bootsequencemenu
 EndIF
 
+echo "Start Multiboot:    " NOLINE >>T:bootsequencemenu
+IF EXISTS S:Start-Multiboot
+	echo "Yes" >>T:bootsequencemenu
+Else
+	echo "No" >>T:bootsequencemenu
+EndIF
+
+echo "Select Multiboot Default" >>T:bootsequencemenu
+
 echo "Start AGS2 Games:   " NOLINE >>T:bootsequencemenu
 IF EXISTS ENV:ags2gamespath
 	IF EXISTS S:Start-AGS2Games
@@ -273,13 +282,23 @@ IF $bootsequencemenu eq "1"
 	SKIP abs
 ENDIF 
 
-; Switch Start AGS2 Games
+; Switch Start Multiboot
 IF $bootsequencemenu eq "2" 
+	SKIP multiboot
+ENDIF 
+
+; Select Multiboot Default
+IF $bootsequencemenu eq "3" 
+	SKIP multibootdefault
+ENDIF 
+
+; Switch Start AGS2 Games
+IF $bootsequencemenu eq "4" 
 	SKIP ags2games
 ENDIF 
 
 ; Switch Start AGS2 Demos
-IF $bootsequencemenu eq "3" 
+IF $bootsequencemenu eq "5" 
 	SKIP ags2demos
 ENDIF 
 
@@ -502,6 +521,7 @@ echo "v43.46 Cosmos A600/A1200" >>T:scsidevicemenu
 echo "v43.47 Cosmos A600/A1200" >>T:scsidevicemenu
 echo "v44.20 Doobrey A600     " >>T:scsidevicemenu
 echo "v44.20 Doobrey A1200    " >>T:scsidevicemenu
+echo "          Back          " >>T:scsidevicemenu
 
 ; Show select scsi.device menu
 C:ReqList CLONERT BUTTONS I T:scsidevicemenu O ENV:scsidevicemenu H "Select scsi.device"
@@ -538,7 +558,6 @@ ENDIF
 IF $bootsequencemenu eq "6" 
 	Copy >NIL: SYS:Programs/Configuration/SCSI_v44_20_Doobrey/scsi.device_A1200_44.2 DEVS:scsi.device
 ENDIF 
-
 
 SKIP devicelibrarymenu back
 
@@ -585,9 +604,67 @@ IF EXISTS S:Start-ABS
 	delete >NIL: S:Start-ABS
 Else
 	echo "" > S:Start-ABS
+	delete >NIL: S:Start-Multiboot
 	delete >NIL: S:Start-AGS2Games
 	delete >NIL: S:Start-AGS2Demos
 EndIF
+
+SKIP bootsequencemenu back
+
+
+; Configure Multiboot
+; -------------------
+LAB multiboot
+
+IF EXISTS S:Start-Multiboot
+	delete >NIL: S:Start-Multiboot
+Else
+	echo "" > S:Start-Multiboot
+	delete >NIL: S:Start-ABS
+	delete >NIL: S:Start-AGS2Games
+	delete >NIL: S:Start-AGS2Demos
+EndIF
+
+SKIP bootsequencemenu back
+
+
+; Select Multiboot Default
+; ------------------------
+LAB multibootdefault
+
+echo "" NOLINE >T:multibootdefaultmenu
+
+IF EXISTS ENV:ags2gamespath
+	echo "Games" >>T:multibootdefaultmenu
+ENDIF
+
+IF EXISTS ENV:ags2demospath
+	echo "Demos" >>T:multibootdefaultmenu
+ENDIF
+
+echo "Workbench" >>T:multibootdefaultmenu
+echo "Back" >>T:multibootdefaultmenu
+
+; Show select multiboot default menu
+C:ReqList CLONERT BUTTONS I T:multibootdefaultmenu O ENV:multibootdefaultmenu H "Select Multiboot Default"
+
+; Delete select multiboot default menu
+delete >NIL: T:multibootdefaultmenu
+
+; Games
+IF $multibootdefaultmenu eq "1" 
+	copy >NIL: S:StartUp.Games S:StartUp.Default
+ENDIF 
+
+; Demos
+IF $multibootdefaultmenu eq "2" 
+	copy >NIL: S:StartUp.Demos S:StartUp.Default
+ENDIF 
+
+; Workbench
+IF $multibootdefaultmenu eq "3" 
+	copy >NIL: S:StartUp.Workbench S:StartUp.Default
+ENDIF 
 
 SKIP bootsequencemenu back
 
@@ -601,6 +678,7 @@ IF EXISTS ENV:ags2gamespath
 		delete >NIL: S:Start-AGS2Games
 	Else
 		echo "" > S:Start-AGS2Games
+		delete >NIL: S:Start-Multiboot
 		delete >NIL: S:Start-ABS
 		delete >NIL: S:Start-AGS2Demos
 	EndIF
@@ -618,6 +696,7 @@ IF EXISTS ENV:ags2demospath
 		delete >NIL: S:Start-AGS2Demos
 	Else
 		echo "" > S:Start-AGS2Demos
+		delete >NIL: S:Start-Multiboot
 		delete >NIL: S:Start-ABS
 		delete >NIL: S:Start-AGS2Games
 	EndIF
