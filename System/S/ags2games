@@ -12,21 +12,23 @@ ENDIF
 Assign AGS: $ags2gamespath
 
 
-; Copy whdload args to env, if it exists. Otherwise use default
-IF EXISTS AGS:whdloadargs
-  copy >NIL: AGS:whdloadargs ENV:whdloadargs
-ELSE
-  setenv whdloadargs ""
-ENDIF
-
-
 ; Set menu path to ags2 games path
 setenv menupath "$ags2gamespath"
 
 
 ; Start AGS2
 IF EXISTS AGS:AGS2
+  ; AGS2 Music Start
+  IF EXISTS S:AGS2MusicStart
+    execute S:AGS2MusicStart
+  ENDIF
+
   AGS:AGS2
+
+  ; AGS2 Music Stop
+  IF EXISTS S:AGS2MusicStop
+    execute S:AGS2MusicStop
+  ENDIF
 ENDIF
 
 

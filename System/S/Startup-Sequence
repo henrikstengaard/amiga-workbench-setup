@@ -142,6 +142,24 @@ execute S:User-Assign
 execute S:User-Env
 
 
+; Load whdloadargs to env, if it exists
+IF EXISTS S:Settings/whdloadargs
+  copy >NIL: S:Settings/whdloadargs ENV:whdloadargs
+ENDIF
+
+
+; Load favouritesmode to env, if it exists
+IF EXISTS S:Settings/favouritesmode
+  copy >NIL: S:Settings/favouritesmode ENV:favouritesmode
+ENDIF
+
+
+; Load ags2music to env, if it exists
+IF EXISTS S:Settings/ags2music
+  copy >NIL: S:Settings/ags2music ENV:ags2music
+ENDIF
+
+
 ; Start Amiga Boot Selector, if "Start-ABS" file exists
 IF EXISTS S:Start-ABS
 	C:abs

@@ -1,0 +1,11 @@
+; AGS2 Music Start Script
+; -----------------------
+
+; Start HippoPlayer hidden with random file from menu path music directory, if "ags2music" exists
+IF EXISTS ENV:ags2music
+  set randommusic `C:filepick "$menupath/music/#?"`
+  IF NOT $randommusic EQ ""
+    C:HiP quit
+    C:HiP hide "$randommusic"
+  ENDIF
+ENDIF

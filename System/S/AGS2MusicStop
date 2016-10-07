@@ -1,0 +1,5 @@
+; AGS2 Music Stop Script
+; ----------------------
+
+; Stop HippoPlayer
+C:HiP quit

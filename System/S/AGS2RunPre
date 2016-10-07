@@ -1,0 +1,18 @@
+; AGS2 Pre Script
+; ---------------
+
+; Favourites Mode
+IF EXISTS ENV:favouritesmode
+	execute S:Favourites "[$Menu]" "[$MenuItemIndexName]" "[$MenuItemFileName]"
+	IF $favouritesmode EQ "add"
+		SKIP end
+	ENDIF
+	IF $favouritesmode EQ "remove"
+		SKIP end
+	ENDIF
+ENDIF
+
+; AGS2 Music Stop
+IF EXISTS S:AGS2MusicStop
+  execute S:AGS2MusicStop
+ENDIF
