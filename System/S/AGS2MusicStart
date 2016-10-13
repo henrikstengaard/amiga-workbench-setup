@@ -5,7 +5,6 @@
 IF EXISTS ENV:ags2music
   set randommusic `C:filepick "$menupath/music/#?"`
   IF NOT $randommusic EQ ""
-    C:HiP quit
     C:HiP hide "$randommusic"
   ENDIF
 ENDIF
